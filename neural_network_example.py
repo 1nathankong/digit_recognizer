@@ -86,6 +86,35 @@ def gradient_descent(X,Y, iterations, alpha):
             print("Accuracy: ", get_accuracy(get_predictions(A2), Y))
     return W1, b1, W2, b2
 
+def make_predictions(X, W1, b1, W2, b2):
+    _,_,_, A2 = forward_prop(W1, b1, W2, b2, X)
+    predictions = get_predictions(A2)
+    return predictions
+
+def test_predictions(index, W1, b1, W2, b2):
+    current_image = X_train[:,index, None]
+    predictions = make_predictions(X_train[:,index, None], W1, b1, W2, b2)
+    label = Y_train[index]
+    print("prediction: ", predictions)
+    print("label: ", label)
+
+    current_image = current_image.get().reshape((28,28)) * 255
+    plt.gray()
+    plt.imshow(current_image, interpolation='nearest')
+    plt.show()
+
+
 X_train_gpu = cp.asarray(X_train)
 Y_train_gpu = cp.asarray(Y_train)
 W1, b1, W2, b2 = gradient_descent (X_train_gpu, Y_train_gpu, 5000, .8)
+
+test_predictions(0, W1, b1, W2, b2)
+test_predictions(1, W1, b1, W2, b2)
+test_predictions(2, W1, b1, W2, b2)
+test_predictions(3, W1, b1, W2, b2)
+test_predictions(4, W1, b1, W2, b2)
+test_predictions(5, W1, b1, W2, b2)
+test_predictions(6, W1, b1, W2, b2)
+test_predictions(7, W1, b1, W2, b2)
+test_predictions(8, W1, b1, W2, b2)
+test_predictions(9, W1, b1, W2, b2)
