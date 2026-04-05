@@ -15,13 +15,13 @@ X_dev = data_dev[1:n]
 data_train = data[1000:m].T
 Y_train = data_train[0]
 X_train = data_train[1:n]
-X_train = X_train.astype('float8') / 255
-X_dev = X_dev.astype('float8') / 255
+X_train = X_train.astype('float16') / 255
+X_dev = X_dev.astype('float16') / 255
 
 def init_params():
-    W1 = cp.random.randn(10,784) * cp.sqrt(2.0/784) # the orignal - 0.5 is  just a educated guess values 
-    b1 = cp.random.randn(10,1) 
-    W2 = cp.random.randn(10,10) * cp.sqrt(2.0/10)
+    W1 = cp.random.randn(128,784) * cp.sqrt(2.0/784) # the orignal - 0.5 is  just a educated guess values 
+    b1 = cp.random.randn(128,1) 
+    W2 = cp.random.randn(10,128) * cp.sqrt(2.0/128)
     b2 = cp.random.randn(10,1) 
     
     return W1, b1, W2, b2
@@ -80,7 +80,7 @@ def gradient_descent(X,Y, iterations, alpha):
         Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
         dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X, Y)
         W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
-        if (i % 10 == 0):
+        if (i % 100 == 0):
             print("Iteration:", i)
             print("Accuracy: ", get_accuracy(get_predictions(A2), Y))
     return W1, b1, W2, b2

@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/nkgMe/Documents/digit_recognizer/build",
-  "command": "C:/ProgramData/mingw64/mingw64/bin/c++.exe  @CMakeFiles/DIGIT_RECOGNIZER.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles/DIGIT_RECOGNIZER.dir/src/s1.cpp.obj -c C:/Users/nkgMe/Documents/digit_recognizer/src/s1.cpp",
-  "file": "C:/Users/nkgMe/Documents/digit_recognizer/src/s1.cpp",
-  "output": "CMakeFiles/DIGIT_RECOGNIZER.dir/src/s1.cpp.obj"
-}
-]

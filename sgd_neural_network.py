@@ -2,9 +2,11 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import cupy as cp
 
-data = pd.read_csv('train.csv')
+data = pd.read_csv('test.csv')
 
 data = cp.array(data)
+#print(data.flags['C_CONTIGUOUS'])  # If True, it is Row-major (C-style)
+#print(data.flags['F_CONTIGUOUS'])  # If True, it is Column-major (Fortran-style)
 
 m , n = data.shape
 cp.random.shuffle(data)
@@ -19,7 +21,7 @@ X_train = X_train.astype('float16') / 255
 X_dev = X_dev.astype('float16') / 255
 
 def init_params():
-    W1 = cp.random.randn(512,784) * cp.sqrt(2.0/784) # the orignal - 0.5 is  just a educated guess values 
+    W1 = cp.random.randn(512,784) * cp.sqrt(2.0/784) # the original - 0.5 is  just a educated guess values 
     b1 = cp.random.randn(512,1) 
     W2 = cp.random.randn(10,512) * cp.sqrt(2.0/512)
     b2 = cp.random.randn(10,1) 
@@ -116,10 +118,11 @@ def test_predictions(index, W1, b1, W2, b2):
 
 X_train_gpu = cp.asarray(X_train)
 Y_train_gpu = cp.asarray(Y_train)
-W1, b1, W2, b2 = mini_batch_sgd(X_train_gpu, Y_train_gpu, 6, .1, 50)
+W1, b1, W2, b2 = mini_batch_sgd(X_train_gpu, Y_train_gpu, 6, .2, 50)
 
 
 
 test_predictions(0, W1, b1, W2, b2)
 test_predictions(1, W1, b1, W2, b2)
 test_predictions(2, W1, b1, W2, b2)
+test_predictions(3, W1, b1, W2, b2)
