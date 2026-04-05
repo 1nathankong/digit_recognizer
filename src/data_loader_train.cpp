@@ -31,7 +31,6 @@ void parse_labels(std::ifstream& file)
 {
     int32_t magic;
     int32_t items;
-    unsigned int label;
     
     file.read(reinterpret_cast<char*>(&magic), OFFSET);
     magic = std::byteswap(magic);
@@ -39,12 +38,6 @@ void parse_labels(std::ifstream& file)
     file.read(reinterpret_cast<char*>(&items), OFFSET);
     items = std::byteswap(items);
 
-    
-    for (int i = 0; i < 10; i++)
-    {
-        file.read(reinterpret_cast<char*>(&label), OFFSET);
-    }
-    
 }
 
 void parse_images(std::ifstream& file)
@@ -53,7 +46,6 @@ void parse_images(std::ifstream& file)
     int32_t num_images;
     int32_t num_rows;
     int32_t num_columns;
-    unsigned int pixel;
 
     file.read(reinterpret_cast<char*>(&magic_number), OFFSET);
     magic_number = std::byteswap(magic_number);
@@ -65,27 +57,21 @@ void parse_images(std::ifstream& file)
     num_rows = std::byteswap(num_rows);
     file.read(reinterpret_cast<char*>(&num_columns), OFFSET);
     num_columns = std::byteswap(num_columns);
-
-    for(int i = 0; i < 784; i++) {
-        file.read(reinterpret_cast<char*>(&pixel), OFFSET);
-    }
 }
 
 void define_dataset(std::ifstream& img_file, std::ifstream&lbl_file, Dataset& data)
 {
     data.resize(TRAIN_IMAGES);
-    data.images.resize(TRAIN_IMAGES*IMG_SIZE);
+    //data.images.resize(TRAIN_IMAGES*IMG_SIZE);
     
     lbl_file.read(reinterpret_cast<char*>(data.labels.data()), TRAIN_IMAGES);
     
     std::vector<uint8_t> temp_pixels(TRAIN_IMAGES*IMG_SIZE);
     img_file.read(reinterpret_cast<char*>(temp_pixels.data()), temp_pixels.size());
-
     for(size_t i = 0; i < temp_pixels.size(); i++)
     {
         data.images[i] = static_cast<float>(temp_pixels[i])/ 255.0f;
     }
-    
 }
 
 void load(const std::string& path, Dataset& data)
@@ -104,32 +90,37 @@ void load(const std::string& path, Dataset& data)
     }
 }
 
-/*
-void verify_data(const Dataset& data) {
-    if (data.labels.empty()) return;
 
-    std::cout << "First Label: " << (int)data.labels[0] << std::endl;
-    std::cout << "First Image Visualization:" << std::endl;
+void verify_data(const Dataset& data, int index) {
+    if (index >= data.labels.size()) {
+        std::cout << "Index out of bounds!" << std::endl;
+        return;
+    }
+
+    std::cout << "\n--- Verifying Index " << index << " ---" << std::endl;
+    std::cout << "Label: " << (int)data.labels[index] << std::endl;
+
+    // Calculate where this specific image starts in the flat vector
+    int start_pos = index * 784; 
 
     for (int r = 0; r < 28; r++) {
         for (int c = 0; c < 28; c++) {
-            // Get pixel from the flattened vector
-            float pixel = data.images[r * 28 + c];
-            // If pixel > 0.5 (gray/black), print a character, otherwise a space
+            // Get pixel using the offset for this specific image
+            float pixel = data.images[start_pos + (r * 28 + c)];
             std::cout << (pixel > 0.5f ? "##" : "  ");
         }
         std::cout << std::endl;
     }
 }
-*/
 
 
 int main() {
     Dataset myData;
     load("../", myData);
 
-    // Run the check
-    #verify_data(myData);
+    for (int i = 0; i < 100; i++) {
+        verify_data(myData, i);
+    }
 
     return 0;
 }

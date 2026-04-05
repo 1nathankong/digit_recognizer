@@ -1,3 +1,0 @@
-C:/Users/nkgMe/Documents/digit_recognizer/build/CMakeFiles/DIGIT_RECOGNIZER.dir
-C:/Users/nkgMe/Documents/digit_recognizer/build/CMakeFiles/edit_cache.dir
-C:/Users/nkgMe/Documents/digit_recognizer/build/CMakeFiles/rebuild_cache.dir
