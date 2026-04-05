@@ -10,6 +10,7 @@ First got basic Neural Network with backprop working with 95% accuracy in 3000 i
 Rewrote my Gradient Descent Function as a SGD so I can look at 1 small subset iteration when training. 
 
 Planning C++ rewrite
+    
     /include
         data_loader.hpp - Load the MNIST dataset in C++(done)
         layer.hpp - weights and bias declared and also declaration of compuations done with GPU (in progress)
