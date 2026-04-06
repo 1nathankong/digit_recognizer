@@ -1,6 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 import cupy as cp
+import time
 
 data = pd.read_csv('test.csv')
 
@@ -80,7 +81,7 @@ def mini_batch_sgd(X,Y, epochs, alpha, batch_size = 64):
     m = X.shape[1]
 
     for epoch in range(epochs):
-        
+        start_time = time.perf_counter()
         permutation = cp.random.permutation(m)
         X_shuffled = X[:, permutation]
         Y_shuffled = Y[permutation]
@@ -94,7 +95,14 @@ def mini_batch_sgd(X,Y, epochs, alpha, batch_size = 64):
             dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W2, X_batch, Y_batch)
             W1, b1, W2, b2  = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
 
-        print(f"Epoch: {epoch}, Accuracy: {get_accuracy(get_predictions(A2), Y_batch)}, New Alpha: {alpha}")
+        cp.cuda.Device().synchronize()
+        end_time = time.perf_counter()
+        
+        duration = end_time - start_time
+        throughput = m / duration # total images divided by seconds
+
+        print(f"Epoch: {epoch}, Accuracy: {get_accuracy(get_predictions(A2), Y_batch):.4f}, "
+              f"Throughput: {throughput:.2f} img/sec", flush=True)
     return W1, b1, W2, b2
 
 

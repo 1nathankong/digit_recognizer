@@ -63,11 +63,21 @@ void define_dataset(std::ifstream& img_file, std::ifstream&lbl_file, Dataset& da
 {
     data.resize(TRAIN_IMAGES);
     //data.images.resize(TRAIN_IMAGES*IMG_SIZE);
+    std::cout << "Image file pos: " << img_file.tellg() << std::endl;
+    std::cout << "Label file pos: " << lbl_file.tellg() << std::endl;
     
     lbl_file.read(reinterpret_cast<char*>(data.labels.data()), TRAIN_IMAGES);
     
     std::vector<uint8_t> temp_pixels(TRAIN_IMAGES*IMG_SIZE);
     img_file.read(reinterpret_cast<char*>(temp_pixels.data()), temp_pixels.size());
+
+    std::cout << "Bytes read: " << img_file.gcount() << std::endl;
+    std::cout << "Pixel 300-305: ";
+    for(int i = 300; i < 306; i++) {
+        std::cout << (int)temp_pixels[i] << " ";
+    }
+    std::cout << std::endl;
+
     for(size_t i = 0; i < temp_pixels.size(); i++)
     {
         data.images[i] = static_cast<float>(temp_pixels[i])/ 255.0f;
@@ -113,7 +123,7 @@ void verify_data(const Dataset& data, int index) {
     }
 }
 
-
+/*
 int main() {
     Dataset myData;
     load("../", myData);
@@ -124,4 +134,4 @@ int main() {
 
     return 0;
 }
-
+*/
