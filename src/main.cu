@@ -53,7 +53,7 @@ int main() {
     // Training setup
     std::vector<int> indices(60000);
     std::iota(indices.begin(), indices.end(), 0);
-    std::mt19937 g(42);
+    std::mt19937 g(std::random_device{}());
     float alpha = 0.1f;
 
     std::cout << "Starting training..." << std::endl;
@@ -78,38 +78,45 @@ int main() {
 
             // Single transfer to GPU
             cudaMemcpy(d_batch_images, h_batch_images, 
-                      batch_size * 784 * sizeof(float), 
-                      cudaMemcpyHostToDevice);
-            cudaMemcpy(d_batch_labels, h_batch_labels, 
-                      batch_size * sizeof(int), 
-                      cudaMemcpyHostToDevice);
+                batch_size * 784 * sizeof(float), cudaMemcpyHostToDevice);
+            cudaMemcpy(d_batch_labels, h_batch_labels,
+                batch_size * sizeof(int), cudaMemcpyHostToDevice);
 
             // Forward pass
             gpu_matmul(d_batch_images_matrix, d_net.W1, d_net.b1, d_net.Z1);
-            gpu_relu_forward(d_net.Z1.elements, d_net.A1.elements, 0.01f, 64 * 512);
+            gpu_relu_forward(d_net.Z1.elements, 
+                d_net.A1.elements, 0.01f, 64 * 512);
             gpu_matmul(d_net.A1, d_net.W2, d_net.b2, d_net.Z2);
             gpu_softmax(d_net.Z2.elements, d_net.Probs.elements, 64);
 
             // Backward pass
             gpu_one_hot(d_batch_labels, d_net.Y_one_hot.elements, 64);
-            gpu_calculate_error(d_net.Probs.elements, d_net.Y_one_hot.elements, d_net.dZ2.elements, 64 * 10);
+            gpu_calculate_error(d_net.Probs.elements, 
+                d_net.Y_one_hot.elements, d_net.dZ2.elements, 64 * 10);
             gpu_matmul_AT_B(d_net.A1, d_net.dZ2, d_net.dW2, 64.0f);
-            gpu_bias_grad(d_net.dZ2.elements, d_net.db2.elements, 64, 10, 64.0f);
+            gpu_bias_grad(d_net.dZ2.elements, 
+                d_net.db2.elements, 64, 10, 64.0f);
             gpu_matmul_A_BT(d_net.dZ2, d_net.W2, d_net.dZ1);
-            gpu_relu_backward(d_net.dZ1.elements, d_net.Z1.elements, 64 * 512);
+            gpu_relu_backward(d_net.dZ1.elements, 
+                d_net.Z1.elements, 64 * 512);
             gpu_matmul_AT_B(d_batch_images_matrix, d_net.dZ1, d_net.dW1, 64.0f);
-            gpu_bias_grad(d_net.dZ1.elements, d_net.db1.elements, 64, 512, 64.0f);
+            gpu_bias_grad(d_net.dZ1.elements, 
+                d_net.db1.elements, 64, 512, 64.0f);
 
             // Update parameters
-            gpu_update_params(d_net.W2.elements, d_net.dW2.elements, alpha, 512 * 10);
+            gpu_update_params(d_net.W2.elements, 
+                d_net.dW2.elements, alpha, 512 * 10);
             gpu_update_params(d_net.b2.elements, d_net.db2.elements, alpha, 10);
-            gpu_update_params(d_net.W1.elements, d_net.dW1.elements, alpha, 784 * 512);
-            gpu_update_params(d_net.b1.elements, d_net.db1.elements, alpha, 512);
+            gpu_update_params(d_net.W1.elements, 
+                d_net.dW1.elements, alpha, 784 * 512);
+            gpu_update_params(d_net.b1.elements, 
+                d_net.db1.elements, alpha, 512);
         }
 
         // Epoch loss
         float h_probs[64 * 10];
-        cudaMemcpy(h_probs, d_net.Probs.elements, 64 * 10 * sizeof(float), cudaMemcpyDeviceToHost);
+        cudaMemcpy(h_probs, d_net.Probs.elements, 
+            64 * 10 * sizeof(float), cudaMemcpyDeviceToHost);
         
         int correct = 0;
         float loss = 0.0f;

@@ -59,20 +59,16 @@ void parse_images(std::ifstream& file)
     num_columns = std::byteswap(num_columns);
 }
 
-void define_dataset(std::ifstream& img_file, std::ifstream&lbl_file, Dataset& data)
+void define_dataset(std::ifstream& img_file, std::ifstream&lbl_file, 
+    Dataset& data)
 {
     data.resize(TRAIN_IMAGES);
-    //data.images.resize(TRAIN_IMAGES*IMG_SIZE);
-    std::cout << "Image file pos: " << img_file.tellg() << std::endl;
-    std::cout << "Label file pos: " << lbl_file.tellg() << std::endl;
-    
     lbl_file.read(reinterpret_cast<char*>(data.labels.data()), TRAIN_IMAGES);
     
     std::vector<uint8_t> temp_pixels(TRAIN_IMAGES*IMG_SIZE);
-    img_file.read(reinterpret_cast<char*>(temp_pixels.data()), temp_pixels.size());
+    img_file.read(reinterpret_cast<char*>(temp_pixels.data()), 
+    temp_pixels.size());
 
-    std::cout << "Bytes read: " << img_file.gcount() << std::endl;
-    std::cout << "Pixel 300-305: ";
     for(int i = 300; i < 306; i++) {
         std::cout << (int)temp_pixels[i] << " ";
     }
@@ -96,7 +92,6 @@ void load(const std::string& path, Dataset& data)
         parse_images(image_file);
         parse_labels(label_file);
         define_dataset(image_file, label_file, data);
-        std::cout << "dataset can be parsed and defined" << std::endl;
     }
 }
 

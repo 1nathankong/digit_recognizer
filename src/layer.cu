@@ -314,19 +314,23 @@ void allocate_network_gpu(NeuralNetwork& d_net, const NeuralNetwork& h_net)
 {
     d_net.W1 = {h_net.W1.height, h_net.W1.width, nullptr};
     cudaMalloc(&d_net.W1.elements, d_net.W1.height * d_net.W1.width * sizeof(float));
-    cudaMemcpy(d_net.W1.elements, h_net.W1.elements, d_net.W1.height * d_net.W1.width * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_net.W1.elements, h_net.W1.elements, 
+        d_net.W1.height * d_net.W1.width * sizeof(float), cudaMemcpyHostToDevice);
 
     d_net.b1 = {h_net.b1.height, h_net.b1.width, nullptr};
     cudaMalloc(&d_net.b1.elements, d_net.b1.height * d_net.b1.width * sizeof(float));
-    cudaMemcpy(d_net.b1.elements, h_net.b1.elements, d_net.b1.height * d_net.b1.width * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_net.b1.elements, h_net.b1.elements, 
+        d_net.b1.height * d_net.b1.width * sizeof(float), cudaMemcpyHostToDevice);
 
     d_net.W2 = {h_net.W2.height, h_net.W2.width, nullptr};
     cudaMalloc(&d_net.W2.elements, d_net.W2.height * d_net.W2.width * sizeof(float));
-    cudaMemcpy(d_net.W2.elements, h_net.W2.elements, d_net.W2.height * d_net.W2.width * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_net.W2.elements, h_net.W2.elements, 
+        d_net.W2.height * d_net.W2.width * sizeof(float), cudaMemcpyHostToDevice);
 
     d_net.b2 = {h_net.b2.height, h_net.b2.width, nullptr};
     cudaMalloc(&d_net.b2.elements, d_net.b2.height * d_net.b2.width * sizeof(float));
-    cudaMemcpy(d_net.b2.elements, h_net.b2.elements, d_net.b2.height * d_net.b2.width * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_net.b2.elements, h_net.b2.elements, 
+        d_net.b2.height * d_net.b2.width * sizeof(float), cudaMemcpyHostToDevice);
 
     d_net.Z1 = {64,512, nullptr};
     cudaMalloc(&d_net.Z1.elements, 64 * 512 * sizeof(float));
