@@ -24,7 +24,12 @@ C++ rewrite
     CMakeLists.txt - compiler code to setup model in C++
 
 Graphed data of Results:
+
+Graph 1 in raw %
 ![alt text](benchmark_results.png)
+
+Graph 2 Multiplier values
+![alt text](performance_multiplier.png)
 
 Reflection:
 
