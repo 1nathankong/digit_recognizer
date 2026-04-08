@@ -62,7 +62,7 @@ int main() {
     {
         int correct = 0;
         float loss = 0.0f;
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
         auto epoch_start = std::chrono::high_resolution_clock::now();
         std::shuffle(indices.begin(), indices.end(), g);
 
@@ -115,9 +115,7 @@ int main() {
                 d_net.dW1.elements, alpha, 784 * 512);
             gpu_update_params(d_net.b1.elements, 
                 d_net.db1.elements, alpha, 512);
-            cudaDeviceSynchronize();
         }
-        cudaDeviceSynchronize();
         auto epoch_end = std::chrono::high_resolution_clock::now();
         float epoch_seconds = std::chrono::duration<float>(epoch_end - epoch_start).count();
         float throughput = 60000.0f / epoch_seconds;
@@ -144,6 +142,7 @@ int main() {
             }
             if(predicted == label) correct++;
         }
+        cudaDeviceSynchronize();
         loss /= 64.0f;
         float accuracy = (float)correct / 64.0f * 100.0f;
         std::cout << "Epoch " << epoch << " | alpha: " << alpha
