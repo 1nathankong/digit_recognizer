@@ -1,7 +1,6 @@
 import torch 
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-import pandas as pd
 from torch import nn,save,load
 import torch.optim as optim
 import time
