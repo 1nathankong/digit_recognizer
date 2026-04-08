@@ -5,7 +5,7 @@ Dataset I used: MNIST numbers, csv and binary(idx)
 
 Update status:
 
-First got basic Neural Network with backprop working with 95% accuracy in 3000 iterations
+First got basic Neural Network with backprop working with 95% accuracy in 3000 iterations, iterations became tedious so I began training in epochs/batches to see how my model would react with more stability and faster training. 
 
 Rewrote my Gradient Descent Function as a SGD so I can look at 1 small subset iteration when training. 
 
@@ -25,6 +25,8 @@ C++ rewrite
 
 Graphed data of Results:
 
+I got my data from my C++ model and compared it to the Pytorch model. It seems all my performance optimizations really paid off when comparing to Pytorch. 
+
 Graph 1 in raw %
 ![alt text](benchmark_results.png)
 
@@ -33,10 +35,9 @@ Graph 2 Multiplier values
 
 Reflection:
 
-C++ rewrite 3.51x faster than Python Version. C++ can process 132,131 images/sec, while Python ranges between 20,000-30,000 images/sec
+C++ rewrite 3.51x faster than Python Version with no Pytorch. C++ can process 132,131 images/sec, while Python ranges between 20,000-30,000 images/sec
+C++ version smokes Pytorch in the graphs above(10-11x speedup). I would like to say Torch is super convenient to use but for raw optimization, much more has to be done. 
 
-I ran a second test. C++ model vs Pytorch model, C=+ model smoked it significantly. 
-133k images/sec vs 10,000 images/sec
 
 C++ written with only CUDA libary calls for cpu/gpu data transfer.
 
