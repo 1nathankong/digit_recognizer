@@ -5,7 +5,7 @@ Dataset I used: MNIST numbers, csv and binary(idx)
 
 Update status:
 
-First got basic Neural Network with backprop working with 95% accuracy in 3000 iterations
+First got basic Neural Network with backprop working with 95% accuracy in 3000 iterations, iterations became tedious so I began training in epochs/batches to see how my model would react with more stability and faster training. 
 
 Rewrote my Gradient Descent Function as a SGD so I can look at 1 small subset iteration when training. 
 
