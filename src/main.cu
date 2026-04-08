@@ -55,11 +55,15 @@ int main() {
     std::iota(indices.begin(), indices.end(), 0);
     std::mt19937 g(std::random_device{}());
     float alpha = 0.1f;
-
     std::cout << "Starting training..." << std::endl;
-    auto start = std::chrono::high_resolution_clock::now();
+    cudaDeviceSynchronize();
+    auto total_start = std::chrono::high_resolution_clock::now();
     for(int epoch = 0; epoch < 6; ++epoch)
     {
+        int correct = 0;
+        float loss = 0.0f;
+        cudaDeviceSynchronize();
+        auto epoch_start = std::chrono::high_resolution_clock::now();
         std::shuffle(indices.begin(), indices.end(), g);
 
         for(int i = 0; i < 60000; i += 64)
@@ -111,15 +115,19 @@ int main() {
                 d_net.dW1.elements, alpha, 784 * 512);
             gpu_update_params(d_net.b1.elements, 
                 d_net.db1.elements, alpha, 512);
+            cudaDeviceSynchronize();
         }
+        cudaDeviceSynchronize();
+        auto epoch_end = std::chrono::high_resolution_clock::now();
+        float epoch_seconds = std::chrono::duration<float>(epoch_end - epoch_start).count();
+        float throughput = 60000.0f / epoch_seconds;
 
         // Epoch loss
         float h_probs[64 * 10];
         cudaMemcpy(h_probs, d_net.Probs.elements, 
             64 * 10 * sizeof(float), cudaMemcpyDeviceToHost);
         
-        int correct = 0;
-        float loss = 0.0f;
+        
         for(int b = 0; b < 64; ++b) 
         {
             int label = h_batch_labels[b];
@@ -138,14 +146,13 @@ int main() {
         }
         loss /= 64.0f;
         float accuracy = (float)correct / 64.0f * 100.0f;
-        std::cout << "Epoch " << epoch + 1 << "/6 | alpha: " << alpha 
-          << " | loss: " << loss 
-          << " | accuracy: " << accuracy << "%" << std::endl;
+        std::cout << "Epoch " << epoch << " | alpha: " << alpha
+        << " | loss: " << loss
+        << " | accuracy: " << accuracy << "%"
+        << " | Throughput: " << throughput << " images/sec"
+        << std::endl;
     }
-    auto end = std::chrono::high_resolution_clock::now();
-    float seconds = std::chrono::duration<float>(end - start).count();
-    float throughput = (60000.0f * 6.0f) / seconds;
-    std::cout << "Throughput: " << throughput << " images/sec" << std::endl;
+    
 
     // Free GPU memory
     cudaFree(d_batch_images);

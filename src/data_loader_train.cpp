@@ -69,11 +69,6 @@ void define_dataset(std::ifstream& img_file, std::ifstream&lbl_file,
     img_file.read(reinterpret_cast<char*>(temp_pixels.data()), 
     temp_pixels.size());
 
-    for(int i = 300; i < 306; i++) {
-        std::cout << (int)temp_pixels[i] << " ";
-    }
-    std::cout << std::endl;
-
     for(size_t i = 0; i < temp_pixels.size(); i++)
     {
         data.images[i] = static_cast<float>(temp_pixels[i])/ 255.0f;
@@ -96,6 +91,7 @@ void load(const std::string& path, Dataset& data)
 }
 
 
+/*
 void verify_data(const Dataset& data, int index) {
     if (index >= data.labels.size()) {
         std::cout << "Index out of bounds!" << std::endl;
@@ -117,7 +113,7 @@ void verify_data(const Dataset& data, int index) {
         std::cout << std::endl;
     }
 }
-
+*/
 /*
 int main() {
     Dataset myData;

@@ -25,7 +25,10 @@ C++ rewrite
 
 Reflection:
 
-C++ rewrite 3.51x faster than Python Version. C++ can process 132,131 images/second, while Python ranges between 20,000-30,000 images/second
+C++ rewrite 3.51x faster than Python Version. C++ can process 132,131 images/sec, while Python ranges between 20,000-30,000 images/sec
+
+I ran a second test. C++ model vs Pytorch model, C=+ model smoked it significantly. 
+133k images/sec vs 10,000 images/sec
 
 C++ written with only CUDA libary calls for cpu/gpu data transfer.
 
