@@ -23,6 +23,9 @@ C++ rewrite
 
     CMakeLists.txt - compiler code to setup model in C++
 
+Graphed data of Results:
+![alt text](benchmark_results.png)
+
 Reflection:
 
 C++ rewrite 3.51x faster than Python Version. C++ can process 132,131 images/sec, while Python ranges between 20,000-30,000 images/sec
