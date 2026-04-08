@@ -35,7 +35,7 @@ model = ImageClassifier().to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.2)
 loss_fn = nn.CrossEntropyLoss()
 
-for epoch in range(6):  # Train for 10 epochs
+for epoch in range(6):  # Train for 6 epochs
     train_total = 0
     train_correct = 0
     if torch.cuda.is_available(): torch.cuda.synchronize()
