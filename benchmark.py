@@ -11,7 +11,7 @@ speedup_pct = ((cpp - torch) / torch) * 100
 
 # Plotting
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
-ax1.plot(epochs, cpp, marker='o', label='C++ (CUDA)', color='#3498db')
+ax1.plot(epochs, cpp, marker='o', label='C++ (raw kernel code)', color='#3498db')
 ax1.plot(epochs, torch, marker='s', label='PyTorch', color='#e74c3c')
 ax1.set_yscale('log')
 ax1.set_title('Raw Throughput Comparison')
