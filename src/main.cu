@@ -56,7 +56,7 @@ int main() {
     std::mt19937 g(std::random_device{}());
     float alpha = 0.1f;
     std::cout << "Starting training..." << std::endl;
-    cudaDeviceSynchronize();
+    //cudaDeviceSynchronize();
     auto total_start = std::chrono::high_resolution_clock::now();
     for(int epoch = 0; epoch < 6; ++epoch)
     {
@@ -142,7 +142,7 @@ int main() {
             }
             if(predicted == label) correct++;
         }
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
         loss /= 64.0f;
         float accuracy = (float)correct / 64.0f * 100.0f;
         std::cout << "Epoch " << epoch << " | alpha: " << alpha

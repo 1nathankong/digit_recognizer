@@ -5,7 +5,7 @@ import numpy as np
 
 # Data
 epochs = np.arange(6)
-cpp = np.array([117429, 129375, 128442, 128228, 128245, 128316])
+cpp = np.array([121945, 134007, 129990, 133833, 133825, 133262])
 torch = np.array([10373.7, 10675.0, 10458.5, 10612.3, 10426.8, 10169.5])
 speedup_pct = ((cpp - torch) / torch) * 100
 

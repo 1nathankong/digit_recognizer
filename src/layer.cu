@@ -196,7 +196,7 @@ __global__ void one_hot_kernel(int* labels, float* output, int num_rows)
     if (row >= num_rows) return;
     if(tid >= NUM_NEURONS) return;
 
-    int target_label = labels[row];
+    //int target_label = labels[row];
 
     if (tid == labels[row]) {   
         output[row * NUM_NEURONS + tid] = 1.0f;
