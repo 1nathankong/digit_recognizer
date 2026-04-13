@@ -35,6 +35,8 @@ Graph 2 Kernel Operation Multiplier values
 
 Reflection:
 
+Accuracy 97% in the sgd variant models. 
+
 C++ rewrite has 3.51x more throughput than Python Version with no Pytorch. C++ can process 132,131 images/sec, while Python ranges between 20,000-30,000 images/sec
 C++ version smokes Pytorch in the graphs above(11-13x more throughput). I would like to say Torch is super convenient to use but for raw optimization, much more has to be done. 
 
