@@ -12,16 +12,23 @@ Rewrote my Gradient Descent Function as a SGD so I can look at 1 small subset it
 C++ rewrite
     
     /include
-        data_loader.hpp - Load the MNIST dataset in C++(done)
-        layer.hpp - weights and bias declared and also declaration of compuations done with GPU (in progress)
+        data_loader.hpp - Load the MNIST dataset in C++ (done)
+        layer.hpp - weights and bias declared and also declaration of compuations done with GPU (done)
 
     /src
-        data_loader.cpp - read csv data from data_loader and format to use for Neural Network. 
-        layer.cu - raw computations done on GPU
-        main.cu - all files get called here and executes. allocate and deallocate pointers and free memory after run ends
+        data_loader.cpp - read idx data from data_loader and format to use for Neural Network. Load onto GPU then copy all at once to GPU. (done)
+        layer.cu - raw computations done on GPU (done)
+        main.cu - all files get called here and executes. allocate and deallocate pointers and free memory after run ends (done)
         
 
-    CMakeLists.txt - compiler code to setup model in C++
+    CMakeLists.txt - compiler code to setup model in C++ (done)
+
+Summary of optimizations:
+- When loading the idx data set I used the C++23 libary to flip the bits from big endian to little endian, it is faster to use dedicated instructions that is baked into the x86 assembly than doing manual bit manipulation. One thing to note it is able to do the reverse byte order in a single clock cycle. 
+- Rewrote kernels from scratch, did some hardcodings based on how the layers and neurons were set up. I wrote each kernel operation and had a function for every possible step needed for neural network
+- For instance had functions to perform matrix multiplcations for layers that needed transposes, or if for the output layer since I knew it was going to be 1 dimensional, I flatted to be column major since memory access is designed that way for GPU. 
+- My orignal implementations were feature first, but to process data in parallel and maximize efficiency, updating my model to become batch first.
+- Hardcoding neurons in output layer, rather than looking through all the threads, i only would look at the first 10 threads and only the first 10 threads, so it reduces the time loading 10 values. The important fact to get out of it is that I avoid thread synchronization or any other value comparisons in any registers that are not used. 
 
 Graphed data of Results:
 
