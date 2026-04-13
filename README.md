@@ -42,7 +42,7 @@ Basically the throughput and speedup is signicantly faster in C++ in the Kernel 
 
 Full Runtime comparison: 
 C++: 3307.51 ms
-Pytorch 38682.8502999997 ms
+PyTorch 38682.85 ms
 
 11.7x speedup when accounting for cpu + gpu data transfers + all operations
 
