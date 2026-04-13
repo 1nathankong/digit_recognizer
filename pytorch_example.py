@@ -5,8 +5,14 @@ from torch import nn,save,load
 import torch.optim as optim
 import time
 
+print("Cuda status:", torch.cuda.is_available())
+
+print("torch status", torch.cuda.device_count())
+
+print("name of GPU", torch.cuda.get_device_name())
 
 # load data
+runtime_start = time.perf_counter()
 transform = transforms.Compose([transforms.ToTensor()])
 train_dataset = datasets.MNIST(root="data", download=True, 
                                train=True, transform=transform)
@@ -58,3 +64,5 @@ for epoch in range(6):  # Train for 10 epochs
     throughput = train_total / duration # total images divided by seconds
     epoch_acc = 100 * train_correct / train_total
     print(f"Epoch {epoch} Throughput: {throughput:.2f} images/sec")
+runtime_end = (time.perf_counter() - runtime_start) * 1000
+print(f"Runtime:{runtime_end} ms")

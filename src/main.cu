@@ -10,7 +10,7 @@
 int main() {
     // Force CUDA init
     cudaSetDevice(0);
-
+    auto runtime_start = std::chrono::high_resolution_clock::now();
     // Load data on CPU
     Dataset data;
     load("../", data);
@@ -57,7 +57,6 @@ int main() {
     float alpha = 0.1f;
     std::cout << "Starting training..." << std::endl;
     //cudaDeviceSynchronize();
-    auto total_start = std::chrono::high_resolution_clock::now();
     for(int epoch = 0; epoch < 6; ++epoch)
     {
         int correct = 0;
@@ -117,7 +116,8 @@ int main() {
                 d_net.db1.elements, alpha, 512);
         }
         auto epoch_end = std::chrono::high_resolution_clock::now();
-        float epoch_seconds = std::chrono::duration<float>(epoch_end - epoch_start).count();
+        float epoch_seconds = std::chrono::duration<float>(epoch_end - 
+            epoch_start).count();
         float throughput = 60000.0f / epoch_seconds;
 
         // Epoch loss
@@ -177,6 +177,12 @@ int main() {
     delete[] h_net.W2.elements;
     delete[] h_net.b1.elements;
     delete[] h_net.b2.elements;
+    auto runtime_end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration =
+    runtime_end - runtime_start;
+
+    std::cout << "Total Runtime: " << duration.count() << "ms" << std::endl;
 
     return 0;
 }
